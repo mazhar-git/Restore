@@ -1,23 +1,33 @@
 import { useEffect, useState } from "react";
+import { Product } from "./product";
 
 
 function App() {
 
-  const [Products, setProducts]=useState(
-    [{name: 'Product1', price:100.00 },
-    {name: 'Product2', price:200.00}]
-  );
+  const [products, setProducts]=useState<Product[]>([]);
 
   useEffect(() => {
    
-    fetch("http://localhost:5000/api/products")
+    fetch('http://localhost:5000/api/products')
     .then(response => response.json())
     .then(data => setProducts(data))
+    .catch(err => console.log(err))
     
   }, [])
 
   function addProduct(){
-    setProducts(prevState => [...prevState, {name: 'Product' + (prevState.length + 1), price: (prevState.length * 100) + 100}])
+    setProducts(prevState => [...prevState, {
+      id: prevState.length + 101,
+      name: 'Product' + (prevState.length + 1), 
+      description:'Some description' +(prevState.length + 1),
+      price: (prevState.length * 100) + 100,
+      pictureUrl: 'image' + (prevState.length +1),
+      type: 'type',
+      brand: 'some-brand' + (prevState.length + 1),
+      quantityInStock:10
+
+    
+    }])
   }
 
   
@@ -26,8 +36,8 @@ function App() {
     <div className="app">
       <h1>Bismillah</h1>
       <ul>
-        {Products.map((item, index) =>(
-          <li key={index}>{item.name} - {item.price}</li>
+        {products.map(product =>(
+          <li key={product.id}>{product.name} - {product.price}</li>
         ))}
       </ul>
       <button onClick={addProduct}>Add Product</button>

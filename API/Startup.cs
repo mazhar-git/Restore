@@ -17,11 +17,12 @@ namespace API
         }
 
         public IConfiguration Configuration { get; }
-
+        
+        
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -50,9 +51,8 @@ namespace API
 
             app.UseRouting();
 
-            app.UseCors(optCors => 
-            {
-                optCors.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000/");
+            app.UseCors(opts =>{
+                opts.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
             });
 
             app.UseAuthorization();

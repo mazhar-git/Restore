@@ -1,5 +1,7 @@
+import { Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Product } from "./product";
+import Catalog from "../../features/catalog/Catalog";
+import { Product } from "../models/product";
 
 
 function App() {
@@ -7,7 +9,7 @@ function App() {
   const [products, setProducts]=useState<Product[]>([]);
 
   useEffect(() => {
-   
+    
     fetch('http://localhost:5000/api/products')
     .then(response => response.json())
     .then(data => setProducts(data))
@@ -15,7 +17,7 @@ function App() {
     
   }, [])
 
-  function addProduct(){
+  function addProduct(): void{
     setProducts(prevState => [...prevState, {
       id: prevState.length + 101,
       name: 'Product' + (prevState.length + 1), 
@@ -25,8 +27,6 @@ function App() {
       type: 'type',
       brand: 'some-brand' + (prevState.length + 1),
       quantityInStock:10
-
-    
     }])
   }
 
@@ -34,13 +34,8 @@ function App() {
 
   return (
     <div className="app">
-      <h1>Bismillah</h1>
-      <ul>
-        {products.map(product =>(
-          <li key={product.id}>{product.name} - {product.price}</li>
-        ))}
-      </ul>
-      <button onClick={addProduct}>Add Product</button>
+      <Typography variant="h1">Bismillah</Typography>
+      <Catalog products={products} addProduct={addProduct}/>
     </div>
   );
 }

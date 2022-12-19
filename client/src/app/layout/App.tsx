@@ -1,42 +1,37 @@
-import { Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
+import { Container } from "@mui/system";
+import { useState } from "react";
 import Catalog from "../../features/catalog/Catalog";
-import { Product } from "../models/product";
+import Header from "./Hearder";
 
 
 function App() {
-
-  const [products, setProducts]=useState<Product[]>([]);
-
-  useEffect(() => {
-    
-    fetch('http://localhost:5000/api/products')
-    .then(response => response.json())
-    .then(data => setProducts(data))
-    .catch(err => console.log(err))
-    
-  }, [])
-
-  function addProduct(): void{
-    setProducts(prevState => [...prevState, {
-      id: prevState.length + 101,
-      name: 'Product' + (prevState.length + 1), 
-      description:'Some description' +(prevState.length + 1),
-      price: (prevState.length * 100) + 100,
-      pictureUrl: 'image' + (prevState.length +1),
-      type: 'type',
-      brand: 'some-brand' + (prevState.length + 1),
-      quantityInStock:10
-    }])
-  }
-
-  
+  const [darkMode, setDarkMode] = useState(false);
+  const palletType = darkMode ? 'dark' : 'light'
+  const theme = createTheme({
+    palette: {
+      mode: palletType,
+      background: {
+        default: palletType === 'light' ? '#eaeaea' : '#121212'
+      }
+    }
+  });
+ 
+function handleThemeChange(){
+  setDarkMode(!darkMode);
+}
 
   return (
-    <div className="app">
-      <Typography variant="h1">Bismillah</Typography>
-      <Catalog products={products} addProduct={addProduct}/>
-    </div>
+    
+    <ThemeProvider theme={theme}>
+      
+      <CssBaseline/>
+      <Header darkMode={darkMode} handleThemeChange={handleThemeChange}/>
+      <Container>
+        <Catalog/>
+      </Container>
+      
+    </ThemeProvider>
   );
 }
 

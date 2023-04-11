@@ -54,8 +54,14 @@ namespace API
 
             app.UseRouting();
 
+            //Allow when use localhost
             app.UseCors(opts =>{
                 opts.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
+            });
+
+            //Allow when use on Local area network (LAN)
+            app.UseCors(opts =>{
+                opts.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://192.168.1.5:3000");
             });
 
             app.UseAuthorization();
